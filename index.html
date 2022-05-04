@@ -1,0 +1,65 @@
+<center>
+<a id='a'><div id='tool'></div></a>
+Enter from where you openend the other image File (please).<BR><BR> Step 1 of 2<br>
+<input type="file" id="inp"><BR><BR>
+<canvas id="canvas"></canvas>
+<script>
+
+  var img=new Image();
+
+var imgd=new Image();
+imgd.onerror=document.getElementById('tool').innerHTML="No Default Archive Found!. Browse to open other Places";
+imgd.onload=function(){
+  img = new Image();
+img.src=imgd.src;
+
+document.getElementById('tool').innerHTML="<img src='standard.img.png' style='width:512px;height:512px'><br>Return to This Launcher HTML &amp; Select this IMG (standard.img.png)";
+ 
+
+}
+imgd.src="standard.img.png";
+
+document.getElementById('inp').onchange = function(e) {
+  img = new Image();
+  img.onload = draw;
+  img.onerror = failed;
+  img.src = URL.createObjectURL(this.files[0]);
+};
+function draw() {
+  var canvas = document.getElementById('canvas');
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0,0);
+
+
+
+base64="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		var pixelssas = ctx.getImageData(0, 0, img.width, img.height);
+str="";
+for(t=0;t<(img.width*img.height);t++){
+	offset=4*t;
+	r=pixelssas.data[offset];
+	g=pixelssas.data[(offset+1)];
+	b=pixelssas.data[(offset+2)];
+		
+	if(r==g && g==b){
+		rr=Math.round(r/4);
+		str=str+base64.charAt(rr);	
+	}
+
+
+
+}
+document.getElementById('a').setAttribute('href', 'data:text/html;base64,'+str);
+document.getElementById('a').setAttribute('download', 'HMidi-Ani_zw93.html');
+document.getElementById('a').click();
+console.log(str);
+alert("Step 1 Completed! Open your download and Extract that (Please, prepare for step 2)");
+
+}
+function failed() {
+  console.error("The provided file couldn't be loaded as an Image media");
+}
+</script>
+<a id='a'></a>
